@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 // use App\Http\Controllers\Admin\MaterialController;
 // use App\Http\Controllers\Admin\StudyMaterialController;
-// use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\UserController;
 // use App\Http\Controllers\AuthController as ControllersAuthController;
 // use App\Http\Controllers\Site\HomeController;
 // use App\Http\Controllers\Site\MaterialController as SiteMaterialController;
@@ -21,15 +21,15 @@ Route::prefix('admin')->group(function() {
 // Route::post('/login', [ControllersAuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
-    // Route::prefix('users')->group(function() {
-    //     Route::get('/', [UserController::class, 'index']);
-    //     Route::post('/create', [UserController::class, 'store']);
-    //     Route::put('/{id}', [UserController::class, 'update']);
-    //     Route::get('/{id}', [UserController::class, 'show']);
-    //     Route::delete('/{id}', [UserController::class, 'destroy']);
-    //     Route::get('/export/data', [UserController::class, 'export']);
+    Route::prefix('users')->group(function() {
+        Route::get('/', [UserController::class, 'index']);
+        Route::post('/create', [UserController::class, 'store']);
+        Route::put('/{id}', [UserController::class, 'update']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::delete('/{id}', [UserController::class, 'destroy']);
+        Route::get('/export/data', [UserController::class, 'export']);
 
-    // });
+    });
     // Route::prefix('materials')->group(function() {
     //     Route::get('/', [MaterialController::class, 'index']);
     //     Route::post('/create', [MaterialController::class, 'store']);
