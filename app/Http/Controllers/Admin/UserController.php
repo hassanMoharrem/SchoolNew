@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -47,12 +45,6 @@ class UserController extends Controller
         }
 
         $input = request()->all();
-
-        // if ($input['visible'] == true) {
-        //     $input['visible'] = 1 ;
-        // } else if ($input['visible'] === null){
-        //     $input['visible'] = 0 ;
-        // }
 
         if (isset($input['image'])) {
             $file = $input['image'];
@@ -134,7 +126,7 @@ class UserController extends Controller
         } else if ($request->input('visible') === null){
             $data['visible'] = 0 ;
         }
-                
+
 
         $find->update($data);
 
@@ -165,61 +157,4 @@ class UserController extends Controller
             ]);
         }
     }
-    // public function export(Request $request){
-    // $spreadsheet = new Spreadsheet();
-    // $sheet = $spreadsheet->getActiveSheet();
-
-    // // رؤوس الأعمدة
-    // $sheet->setCellValue('A1', 'ID');
-    // $sheet->setCellValue('B1', 'Name');
-    // $sheet->setCellValue('C1', 'Email');
-    // $sheet->setCellValue('D1', 'Visible');
-
-    // // تصميم للرؤوس
-    // $headerStyle = [
-    //     'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
-    //     'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '007BFF']],
-    // ];
-    // $sheet->getStyle('A1:D1')->applyFromArray($headerStyle);
-
-    // // بيانات المستخدمين
-    
-    //     $query = User::select('id', 'name', 'email','visible');
-    //     if ($request->filled('name')) {
-    //         $query->where('name', 'like', '%' . $request->name . '%');
-    //     }
-    //     if ($request->filled('visible') && $request->visible !== 1) {
-    //         $query->where('visible', $request->visible);
-    //     }
-    //     $users = $query->get();
-    //     $row = 2;
-
-    // foreach ($users as $user) {
-    //     $sheet->setCellValue("A{$row}", $user->id);
-    //     $sheet->setCellValue("B{$row}", $user->name);
-    //     $sheet->setCellValue("C{$row}", $user->email);
-    //     $sheet->setCellValue("D{$row}", $user->visible);
-    //     $row++;
-    // }
-    //  foreach (range('A', 'D') as $columnID) {
-    //     $sheet->getColumnDimension($columnID)->setAutoSize(true);
-    // }
-    //     $sheet->getStyle('A1:D' . ($row - 1))
-    //       ->getAlignment()
-    //       ->setHorizontal(Alignment::HORIZONTAL_LEFT);
-
-    // // حفظ مؤقت وإرسال للتحميل
-    // $writer = new Xlsx($spreadsheet);
-    // $filename = 'styled_users_' . now()->format('Ymd_His') . '.xlsx';
-    // $tempPath = storage_path("app/{$filename}");
-    // $writer->save($tempPath);
-
-    // return Response::download($tempPath)->deleteFileAfterSend(true);
-    // }
-    public function export(Request $request)
-{
-    $filters = $request->only(['name', 'visible']);
-
-    return Excel::download(new UsersExport($filters), 'users.xlsx');
-}
 }

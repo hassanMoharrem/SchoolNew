@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -11,17 +11,17 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $admin = Admin::where('email', $request->email)->first();
+        $teacher = Teacher::where('email', $request->email)->first();
 
-        if (!$admin || !Hash::check($request->password, $admin->password)) {
+        if (!$teacher || !Hash::check($request->password, $teacher->password)) {
             return response()->json(['message' => 'Error Email Or password'], 401);
         }
 
-        $token = $admin->createToken('admin-token')->plainTextToken;
+        $token = $teacher->createToken('teacher-token')->plainTextToken;
 
         return response()->json([
             'token' => $token,
-            'admin' => $admin,
+            'teacher' => $teacher,
         ]);
     }
 
