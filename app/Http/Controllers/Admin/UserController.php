@@ -30,7 +30,7 @@ class UserController extends Controller
         $validator = Validator::make(request()->all(), [
             'name' => 'required|string|unique:users,name',
             'email' => 'required|email|unique:users,email',
-            'age' => 'required|integer|min:10',
+            'birthday' => 'required|date|min:10',
             'password' => 'required',
             'image' => 'nullable|image',
             'stage_id' => 'required|int|exists:stages,id',
@@ -89,7 +89,7 @@ class UserController extends Controller
             'name' => 'required|string|min:3|max:50|unique:users,name,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable',
-            'age' => 'required|integer',
+            'birthday' => 'required|date',
             'image' => 'nullable|image',
             'stage_id' => 'required|int|exists:stages,id',
             'visible' => 'nullable',
