@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Teacher\AuthController as TeacherAuthController;
 use App\Http\Controllers\User\AuthController as UserAuthController;
@@ -28,6 +29,12 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 
 Route::prefix('teacher')->group(function() {
     Route::post('/login', [TeacherAuthController::class, 'login']);
+        Route::get('/', [TeacherController::class, 'index']);
+        Route::post('/create', [TeacherController::class, 'store']);
+        Route::put('/{id}', [TeacherController::class, 'update']);
+        Route::get('/{id}', [TeacherController::class, 'show']);
+        Route::delete('/{id}', [TeacherController::class, 'destroy']);
+        Route::get('/export/data', [TeacherController::class, 'export']);
 });
 
 Route::middleware('auth:sanctum')->prefix('teacher')->group(function () {
