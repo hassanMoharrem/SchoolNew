@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('image')->nullable();
             $table->date('birthday')->nullable();
             $table->string('password');
+            $table->bigInteger('stage_id')->nullable();
             $table->boolean('visible')->default(false)->nullable();
             $table->rememberToken();
             $table->timestamps();

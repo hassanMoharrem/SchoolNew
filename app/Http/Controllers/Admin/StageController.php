@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Stage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class StageController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = Stage::query();
         if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');
         }
@@ -28,12 +27,9 @@ class UserController extends Controller
     {
         $lang = request()->header('Accept-Language') ?? 'en';
         $validator = Validator::make(request()->all(), [
-            'name' => 'required|string|unique:users,name',
-            'email' => 'required|email|unique:users,email',
-            'age' => 'required|integer|min:10',
-            'password' => 'required',
+            'name' => 'required|string',
+            'description' => 'required|string|min:5|max:1000',
             'image' => 'nullable|image',
-            'stage_id' => 'required|int|exists:stages,id',
             'visible' => 'nullable|boolean'
         ]);
         if ($validator->fails()) {
@@ -52,9 +48,7 @@ class UserController extends Controller
             $input['image'] = $file->store('images', 'public');
         }
 
-        $input['password'] = Hash::make($input['password']);
-
-        $data = User::create($input);
+        $data = Stage::create($input);
         return response()->json([
             'status' => 200,
             'message' => $lang == 'ar' ? 'تم إنشاء البيانات بنجاح' :'Data Created',
@@ -65,13 +59,13 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
+        $stage = Stage::find($id);
 
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+        if (!$stage) {
+            return response()->json(['message' => 'Stage not found'], 404);
         }
 
-        $data = $user->toArray();
+        $data = $stage->toArray();
 
         $checkboxFields = ['visible'];
         foreach ($checkboxFields as $field) {
@@ -86,13 +80,10 @@ class UserController extends Controller
         $lang = request()->header('Accept-Language') ?? 'en';
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:3|max:50|unique:users,name,' . $id,
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable',
-            'age' => 'required|integer',
+            'name' => 'required|string',
+            'description' => 'required|string|min:5|max:1000',
             'image' => 'nullable|image',
-            'stage_id' => 'required|int|exists:stages,id',
-            'visible' => 'nullable',
+            'visible' => 'nullable|boolean'
         ]);
         if ($validator->fails()) {
             $response = [
@@ -103,8 +94,8 @@ class UserController extends Controller
             return response()->json($response, 400);
         }
 
-        $find = User::find($id);
-        $data = $request->except('image','password');
+        $find = Stage::find($id);
+        $data = $request->except('image');
         $old_image = false;
 
         if($request->hasFile('image')){
@@ -114,12 +105,6 @@ class UserController extends Controller
         }
         if($old_image) {
             Storage::disk('public')->delete($old_image);
-        }
-
-        if ($request->has('password') && !empty($request->password)) {
-            $data['password'] = Hash::make($request->password);
-        } else {
-            unset($data['password']);
         }
 
         $find->update($data);
@@ -136,7 +121,7 @@ class UserController extends Controller
     {
         $lang = request()->header('Accept-Language') ?? 'en';
         try {
-            $find = User::find($id);
+            $find = Stage::find($id);
             $find->delete();
             return response()->json([
                 'status' => 200,

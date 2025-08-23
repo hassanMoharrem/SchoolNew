@@ -49,8 +49,18 @@ class Teacher extends Authenticatable
         return $value ? url('storage/' . $value) : asset('assets/images/images.png');
     }
 
-    public function getAgeAttribute()
+    // public function getAgeAttribute()
+    // {
+    //     return \Carbon\Carbon::parse($this->birthday)->age;
+    // }
+
+    public function stages()
     {
-        return \Carbon\Carbon::parse($this->birthday)->age;
+        return $this->belongsToMany(Stage::class, StageSubjectTeacher::class);
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, StageSubjectTeacher::class);
     }
 }

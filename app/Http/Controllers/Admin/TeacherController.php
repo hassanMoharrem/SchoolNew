@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class TeacherController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::query();
+        $query = Teacher::query();
         if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');
         }
@@ -28,12 +28,11 @@ class UserController extends Controller
     {
         $lang = request()->header('Accept-Language') ?? 'en';
         $validator = Validator::make(request()->all(), [
-            'name' => 'required|string|unique:users,name',
-            'email' => 'required|email|unique:users,email',
+            'name' => 'required|string|unique:teachers,name',
+            'email' => 'required|email|unique:teachers,email',
             'age' => 'required|integer|min:10',
             'password' => 'required',
             'image' => 'nullable|image',
-            'stage_id' => 'required|int|exists:stages,id',
             'visible' => 'nullable|boolean'
         ]);
         if ($validator->fails()) {
@@ -54,7 +53,7 @@ class UserController extends Controller
 
         $input['password'] = Hash::make($input['password']);
 
-        $data = User::create($input);
+        $data = Teacher::create($input);
         return response()->json([
             'status' => 200,
             'message' => $lang == 'ar' ? 'تم إنشاء البيانات بنجاح' :'Data Created',
@@ -65,13 +64,13 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
+        $teacher = Teacher::find($id);
 
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+        if (!$teacher) {
+            return response()->json(['message' => 'Teacher not found'], 404);
         }
 
-        $data = $user->toArray();
+        $data = $teacher->toArray();
 
         $checkboxFields = ['visible'];
         foreach ($checkboxFields as $field) {
@@ -86,12 +85,11 @@ class UserController extends Controller
         $lang = request()->header('Accept-Language') ?? 'en';
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:3|max:50|unique:users,name,' . $id,
-            'email' => 'required|email|unique:users,email,' . $id,
+            'name' => 'required|string|min:3|max:50|unique:teachers,name,' . $id,
+            'email' => 'required|email|unique:teachers,email,' . $id,
             'password' => 'nullable',
             'age' => 'required|integer',
             'image' => 'nullable|image',
-            'stage_id' => 'required|int|exists:stages,id',
             'visible' => 'nullable',
         ]);
         if ($validator->fails()) {
@@ -103,7 +101,7 @@ class UserController extends Controller
             return response()->json($response, 400);
         }
 
-        $find = User::find($id);
+        $find = Teacher::find($id);
         $data = $request->except('image','password');
         $old_image = false;
 
@@ -136,7 +134,7 @@ class UserController extends Controller
     {
         $lang = request()->header('Accept-Language') ?? 'en';
         try {
-            $find = User::find($id);
+            $find = Teacher::find($id);
             $find->delete();
             return response()->json([
                 'status' => 200,

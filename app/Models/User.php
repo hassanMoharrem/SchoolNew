@@ -24,6 +24,7 @@ class User extends Authenticatable
         'password',
         'image',
         'birthday',
+        'stage_id',
         'visible',
     ];
 
