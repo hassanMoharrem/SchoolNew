@@ -30,7 +30,7 @@ class TeacherController extends Controller
         $validator = Validator::make(request()->all(), [
             'name' => 'required|string|unique:teachers,name',
             'email' => 'required|email|unique:teachers,email',
-            'age' => 'required|integer|min:10',
+            'birthday' => 'required|date|min:10',
             'password' => 'required',
             'image' => 'nullable|image',
             'visible' => 'nullable|boolean'
@@ -88,7 +88,7 @@ class TeacherController extends Controller
             'name' => 'required|string|min:3|max:50|unique:teachers,name,' . $id,
             'email' => 'required|email|unique:teachers,email,' . $id,
             'password' => 'nullable',
-            'age' => 'required|integer',
+            'birthday' => 'required|date',
             'image' => 'nullable|image',
             'visible' => 'nullable',
         ]);
