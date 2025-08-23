@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
+            $table->text('sub_description')->nullable();
             $table->text('image')->nullable();
             $table->boolean('visible')->default(false)->nullable();
             $table->timestamps();

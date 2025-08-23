@@ -56,6 +56,12 @@ class User extends Authenticatable
         return $value ? url('storage/' . $value) : asset('assets/images/images.png');
     }
 
+    public function stage()
+    {
+        return $this->belongsTo(Stage::class);
+    }
+
+
     // public function getBirthdayAttribute()
     // {
     //     return \Carbon\Carbon::parse($this->birthday)->age;

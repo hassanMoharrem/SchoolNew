@@ -29,6 +29,7 @@ class SubjectController extends Controller
         $validator = Validator::make(request()->all(), [
             'name' => 'required|string',
             'description' => 'required|string|min:5|max:1000',
+            'sub_description' => 'required|string|min:5|max:1000',
             'image' => 'nullable|image',
             'visible' => 'nullable|boolean'
         ]);
@@ -82,6 +83,7 @@ class SubjectController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'description' => 'required|string|min:5|max:1000',
+            'sub_description' => 'required|string|min:5|max:1000',
             'image' => 'nullable|image',
             'visible' => 'nullable|boolean'
         ]);

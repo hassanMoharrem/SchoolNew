@@ -9,6 +9,7 @@ class Subject extends Model
     protected $fillable = [
         'name',
         'description',
+        'sub_description',
         'image',
         'visible',
     ];
@@ -22,7 +23,7 @@ class Subject extends Model
     {
         return $this->belongsToMany(Stage::class, StageSubjectTeacher::class);
     }
-    
+
     public function teachers()
     {
         return $this->belongsToMany(Teacher::class, StageSubjectTeacher::class);

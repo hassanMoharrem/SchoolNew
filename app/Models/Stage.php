@@ -22,9 +22,14 @@ class Stage extends Model
     {
         return $this->belongsToMany(Subject::class, StageSubjectTeacher::class);
     }
-    
+
     public function teachers()
     {
         return $this->belongsToMany(Teacher::class, StageSubjectTeacher::class);
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 }

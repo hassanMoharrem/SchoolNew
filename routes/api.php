@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\StageController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Teacher\AuthController as TeacherAuthController;
@@ -18,17 +19,24 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         Route::put('/{id}', [UserController::class, 'update']);
         Route::get('/{id}', [UserController::class, 'show']);
         Route::delete('/{id}', [UserController::class, 'destroy']);
-        Route::get('/export/data', [UserController::class, 'export']);
-
     });
+
     Route::prefix('teachers')->group(function () {
         Route::get('/', [TeacherController::class, 'index']);
         Route::post('/create', [TeacherController::class, 'store']);
         Route::put('/{id}', [TeacherController::class, 'update']);
         Route::get('/{id}', [TeacherController::class, 'show']);
         Route::delete('/{id}', [TeacherController::class, 'destroy']);
-        Route::get('/export/data', [TeacherController::class, 'export']);
     });
+
+    Route::prefix('stages')->group(function () {
+        Route::get('/', [StageController::class, 'index']);
+        Route::post('/create', [StageController::class, 'store']);
+        Route::put('/{id}', [StageController::class, 'update']);
+        Route::get('/{id}', [StageController::class, 'show']);
+        Route::delete('/{id}', [StageController::class, 'destroy']);
+    });
+
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
@@ -38,13 +46,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 Route::prefix('teacher')->group(function() {
     Route::post('/login', [TeacherAuthController::class, 'login']);
 });
-Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
-
-    Route::post('/logout', [AuthController::class, 'logout']);
-});
-
 Route::middleware('auth:sanctum')->prefix('teacher')->group(function () {
-    
     Route::post('/logout', [TeacherAuthController::class, 'logout']);
     //
 });
