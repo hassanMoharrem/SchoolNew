@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Stage;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -12,15 +13,23 @@ class SubjectController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Subject::query();
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
-        if ($request->filled('visible') && $request->visible !== 1) {
-            $query->where('visible', $request->visible);
-        }
-        $data = $query->orderBy('id', 'desc')->paginate(10);
-        return response()->json($data);
+    $query = Subject::with('stage'); // إضافة العلاقة
+
+    if ($request->filled('name')) {
+        $query->where('name', 'like', '%' . $request->name . '%');
+    }
+    if ($request->filled('visible') && $request->visible !== 1) {
+        $query->where('visible', $request->visible);
+    }
+    $data = $query->orderBy('id', 'desc')->paginate(10);
+
+    // تعديل النتائج لإضافة اسم المرحلة
+    $data->getCollection()->transform(function ($item) {
+        $item->stage_name = $item->stage ? $item->stage->name : null;
+        return $item;
+    });
+
+    return response()->json($data);
     }
 
     public function store()
@@ -30,6 +39,7 @@ class SubjectController extends Controller
             'name' => 'required|string',
             'description' => 'required|string|min:5|max:1000',
             'sub_description' => 'required|string|min:5|max:1000',
+            'stage_id' => 'required|exists:stages,id',
             'image' => 'nullable|image',
             'visible' => 'nullable|boolean'
         ]);
@@ -76,6 +86,12 @@ class SubjectController extends Controller
         }
         return response()->json($data);
     }
+        public function showStages()
+    {
+        $subject = Stage::get(['id','name']);
+
+         return response()->json($subject);
+    }
 
     public function update(Request $request ,$id){
         $lang = request()->header('Accept-Language') ?? 'en';
@@ -84,6 +100,7 @@ class SubjectController extends Controller
             'name' => 'required|string',
             'description' => 'required|string|min:5|max:1000',
             'sub_description' => 'required|string|min:5|max:1000',
+            'stage_id' => 'required|exists:stages,id',
             'image' => 'nullable|image',
             'visible' => 'nullable|boolean'
         ]);
@@ -110,6 +127,8 @@ class SubjectController extends Controller
         }
 
         $find->update($data);
+        $find->load('stage');
+    $find->stage_name = $find->stage ? $find->stage->name : null;
 
         return response()->json([
             'status' => 200,

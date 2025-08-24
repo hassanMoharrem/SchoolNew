@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->text('sub_description')->nullable();
+            $table->bigInteger('stage_id')->nullable();
             $table->text('image')->nullable();
             $table->boolean('visible')->default(false)->nullable();
             $table->timestamps();

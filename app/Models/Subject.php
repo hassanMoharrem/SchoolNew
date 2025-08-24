@@ -10,6 +10,7 @@ class Subject extends Model
         'name',
         'description',
         'sub_description',
+        'stage_id',
         'image',
         'visible',
     ];
@@ -17,6 +18,10 @@ class Subject extends Model
     public function getImageAttribute($value)
     {
         return $value ? url('storage/' . $value) : asset('assets/images/images.png');
+    }
+    public function stage()
+    {
+        return $this->belongsTo(Stage::class);
     }
 
     public function stages()

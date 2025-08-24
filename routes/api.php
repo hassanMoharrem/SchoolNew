@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\StageController;
+use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Teacher\AuthController as TeacherAuthController;
@@ -36,7 +37,14 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
         Route::get('/{id}', [StageController::class, 'show']);
         Route::delete('/{id}', [StageController::class, 'destroy']);
     });
-
+    Route::prefix('subjects')->group(function () {
+        Route::get('/', [SubjectController::class, 'index']);
+        Route::post('/create', [SubjectController::class, 'store']);
+        Route::put('/{id}', [SubjectController::class, 'update']);
+        Route::get('/{id}', [SubjectController::class, 'show']);
+        Route::delete('/{id}', [SubjectController::class, 'destroy']);
+        Route::get('/stages/list', [SubjectController::class, 'showStages']);
+    });
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
@@ -45,6 +53,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 
 Route::prefix('teacher')->group(function() {
     Route::post('/login', [TeacherAuthController::class, 'login']);
+    Route::post('/register', [TeacherAuthController::class, 'register']);
 });
 Route::middleware('auth:sanctum')->prefix('teacher')->group(function () {
     Route::post('/logout', [TeacherAuthController::class, 'logout']);
