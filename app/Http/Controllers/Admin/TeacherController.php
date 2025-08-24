@@ -85,7 +85,7 @@ class TeacherController extends Controller
         $lang = request()->header('Accept-Language') ?? 'en';
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:3|max:50|unique:teachers,name,' . $id,
+            'name' => 'required|string|min:3|max:52|unique:teachers,name,' . $id,
             'email' => 'required|email|unique:teachers,email,' . $id,
             'password' => 'nullable',
             'birthday' => 'required|date',
