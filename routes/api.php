@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\StageController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Teacher\AttachmentController;
 use App\Http\Controllers\Teacher\AuthController as TeacherAuthController;
 use App\Http\Controllers\Teacher\StageController as TeacherStageController;
 use App\Http\Controllers\Teacher\WeekController;
@@ -82,6 +83,14 @@ Route::middleware('auth:sanctum')->prefix('teacher')->group(function () {
         Route::put('/{id}', [WeekController::class, 'update']);
         Route::get('/{id}', [WeekController::class, 'show']);
         Route::delete('/{id}', [WeekController::class, 'destroy']);
+    });
+
+    Route::prefix('attachments')->group(function () {
+        Route::get('/', [AttachmentController::class, 'index']);
+        Route::post('/create', [AttachmentController::class, 'store']);
+        Route::put('/{id}', [AttachmentController::class, 'update']);
+        Route::get('/{id}', [AttachmentController::class, 'show']);
+        Route::delete('/{id}', [AttachmentController::class, 'destroy']);
     });
 
 });

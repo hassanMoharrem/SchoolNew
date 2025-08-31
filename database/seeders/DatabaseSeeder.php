@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
+use App\Models\Attachment;
 use App\Models\Stage;
 use App\Models\StageSubjectTeacher;
 use App\Models\Subject;
@@ -67,6 +68,15 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Test Week ' . $i,
                 'description' => 'Description Test Week' . $i,
                 'stage_subject_teacher_id' => $i,
+            ]);
+        }
+
+        for ($i = 1; $i <= 2; $i++) {
+            Attachment::query()->create([
+                'name' => 'Test Attachment ' . $i,
+                'description' => 'Description Test Attachment' . $i,
+                'week_id' => $i,
+                'file' => 'assets/images/attachment.png',
             ]);
         }
     }
