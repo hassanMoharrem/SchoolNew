@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
 
             Subject::query()->create([
                 'name' => 'Test Subject ' . $i,
+                'stage_id' => 1,
                 'description' => 'Description Test Subject' . $i,
                 'sub_description' => 'Sub Description Test Subject' . $i,
             ]);

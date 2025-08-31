@@ -46,9 +46,9 @@ return [
         ],'admin' => [
             'driver' => 'sanctum',
             'provider' => 'admins',
-        ],'techer' => [
+        ],'teacher' => [
             'driver' => 'sanctum',
-            'provider' => 'techers',
+            'provider' => 'teachers',
         ],
     ],
 
@@ -77,7 +77,7 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
-        ],'techers' => [
+        ],'teachers' => [
             'driver' => 'eloquent',
             'model' => App\Models\Teacher::class,
         ],

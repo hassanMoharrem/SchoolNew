@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Teacher\AuthController as TeacherAuthController;
+use App\Http\Controllers\Teacher\StageController as TeacherStageController;
 use App\Http\Controllers\User\AuthController as UserAuthController;
+use App\Models\StageSubjectTeacher;
 use Illuminate\Support\Facades\Route;
 
 
@@ -54,10 +56,24 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
 Route::prefix('teacher')->group(function() {
     Route::post('/login', [TeacherAuthController::class, 'login']);
     Route::post('/register', [TeacherAuthController::class, 'register']);
+
 });
 Route::middleware('auth:sanctum')->prefix('teacher')->group(function () {
     Route::post('/logout', [TeacherAuthController::class, 'logout']);
-    //
+    Route::prefix('stages')->group(function () {
+        Route::get('/', [TeacherStageController::class, 'index']);
+        Route::get('/{id}/subjects', [TeacherStageController::class, 'getSubjects']);
+
+    });
+    Route::prefix('stage-subject-teacher')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'index']);
+        Route::post('/create', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'store']);
+        Route::get('/{id}', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'show']);
+        Route::get('/show/{id}', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'showSubject']);
+        Route::put('/{id}', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'update']);
+        Route::delete('/delete', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'destroy']);
+        Route::delete('/{id}', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'destroySubscribe']);
+    });
 });
 
 
