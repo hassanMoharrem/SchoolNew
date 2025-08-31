@@ -4,9 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\Stage;
+use App\Models\StageSubjectTeacher;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\User;
+use App\Models\Week;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -49,6 +51,22 @@ class DatabaseSeeder extends Seeder
                 'stage_id' => 1,
                 'description' => 'Description Test Subject' . $i,
                 'sub_description' => 'Sub Description Test Subject' . $i,
+            ]);
+        }
+
+        for ($i = 1; $i <= 3; $i++) {
+            StageSubjectTeacher::query()->create([
+                'stage_id' => $i,
+                'subject_id' => $i,
+                'teacher_id' => $i,
+            ]);
+        }
+
+        for ($i = 1; $i <= 2; $i++) {
+            Week::query()->create([
+                'name' => 'Test Week ' . $i,
+                'description' => 'Description Test Week' . $i,
+                'stage_subject_teacher_id' => $i,
             ]);
         }
     }

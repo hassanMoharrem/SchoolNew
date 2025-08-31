@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Teacher\AuthController as TeacherAuthController;
 use App\Http\Controllers\Teacher\StageController as TeacherStageController;
+use App\Http\Controllers\Teacher\WeekController;
 use App\Http\Controllers\User\AuthController as UserAuthController;
 use App\Models\StageSubjectTeacher;
 use Illuminate\Support\Facades\Route;
@@ -63,8 +64,8 @@ Route::middleware('auth:sanctum')->prefix('teacher')->group(function () {
     Route::prefix('stages')->group(function () {
         Route::get('/', [TeacherStageController::class, 'index']);
         Route::get('/{id}/subjects', [TeacherStageController::class, 'getSubjects']);
-
     });
+
     Route::prefix('stage-subject-teacher')->group(function () {
         Route::get('/', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'index']);
         Route::post('/create', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'store']);
@@ -74,6 +75,15 @@ Route::middleware('auth:sanctum')->prefix('teacher')->group(function () {
         Route::delete('/delete', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'destroy']);
         Route::delete('/{id}', [\App\Http\Controllers\Teacher\StageSubjectTeacherController::class, 'destroySubscribe']);
     });
+
+    Route::prefix('weeks')->group(function () {
+        Route::get('/', [WeekController::class, 'index']);
+        Route::post('/create', [WeekController::class, 'store']);
+        Route::put('/{id}', [WeekController::class, 'update']);
+        Route::get('/{id}', [WeekController::class, 'show']);
+        Route::delete('/{id}', [WeekController::class, 'destroy']);
+    });
+
 });
 
 
