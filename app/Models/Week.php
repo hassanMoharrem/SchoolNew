@@ -17,5 +17,4 @@ class Week extends Model
     {
         return $this->belongsTo(StageSubjectTeacher::class);
     }
-
 }

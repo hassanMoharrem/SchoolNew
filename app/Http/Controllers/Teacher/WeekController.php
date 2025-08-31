@@ -11,7 +11,7 @@ class WeekController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Week::with('stage_subject_teacher'); // إضافة العلاقة
+        $query = Week::with('stage_subject_teacher')->where('stage_subject_teacher_id', $request->stage_subject_teacher_id); // إضافة العلاقة
 
         if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');
