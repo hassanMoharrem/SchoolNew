@@ -26,13 +26,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         for ($i = 1; $i <= 28; $i++) {
-            User::query()->create([
-                'name' => 'Test User ' . $i,
-                'email' => 'test-user' . $i . '@example.com',
-                'birthday' => '2001-07-22',
-                'password' => bcrypt('password'),
-            ]);
-
             Teacher::query()->create([
                 'name' => 'Test Teacher ' . $i,
                 'email' => 'test-teacher' . $i . '@example.com',
@@ -52,6 +45,16 @@ class DatabaseSeeder extends Seeder
                 'stage_id' => 1,
                 'description' => 'Description Test Subject' . $i,
                 'sub_description' => 'Sub Description Test Subject' . $i,
+            ]);
+        }
+
+        for ($i = 1; $i <= 28; $i++) {
+            User::query()->create([
+                'name' => 'Test User ' . $i,
+                'email' => 'test-user' . $i . '@example.com',
+                'birthday' => '2001-07-22',
+                'password' => bcrypt('password'),
+                'stage_id' => rand(1, 28),
             ]);
         }
 

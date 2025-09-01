@@ -79,7 +79,7 @@ class StageSubjectTeacherController extends Controller
             }
         }
         return response()->json($data);
-    } 
+    }
 
     public function destroy()
     {

@@ -62,6 +62,7 @@ Route::prefix('teacher')->group(function() {
 });
 Route::middleware('auth:sanctum')->prefix('teacher')->group(function () {
     Route::post('/logout', [TeacherAuthController::class, 'logout']);
+    
     Route::prefix('stages')->group(function () {
         Route::get('/', [TeacherStageController::class, 'index']);
         Route::get('/{id}/subjects', [TeacherStageController::class, 'getSubjects']);

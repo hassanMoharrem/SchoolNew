@@ -13,6 +13,7 @@ class TeacherController extends Controller
 {
     public function index(Request $request)
     {
+
         $query = Teacher::query();
         if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');
